@@ -1,10 +1,13 @@
 <resources>
 
-    <string name="app_name">ContentConsumer</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Zac</string>
+    
+    <!-- <string name="hello_world">Hello world!</string> -->
+    
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_menu">MenuActivity</string>
-    <string name="title_activity_content">ContentActivity</string>
+    
+    <string name="title_activity_main">Main</string>
+    <string name="title_activity_cms_list">List</string>
+    <string name="title_activity_cms_detail">Detail</string>
 
 </resources>

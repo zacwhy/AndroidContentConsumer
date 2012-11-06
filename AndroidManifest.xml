@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.contentconsumer"
+    package="com.zac.contentconsumer"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="15" />
 
     <application
@@ -20,23 +20,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MenuActivity"
-            android:label="@string/title_activity_menu" >
-            <!--
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.myfirstapp.MainActivity" />
-            -->
+            android:name=".CmsListActivity"
+            android:label="@string/title_activity_cms_list" >
         </activity>
         <activity
-            android:name=".ContentActivity"
-            android:label="@string/title_activity_content" >
-            <!-- 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-             -->
+            android:name=".CmsDetailActivity"
+            android:label="@string/title_activity_cms_detail" >
         </activity>
     </application>
 

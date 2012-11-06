@@ -1,11 +1,15 @@
-package com.example.contentconsumer.database;
+package com.zac.contentconsumer.support;
 
-public class DbMenu {
+import java.util.List;
+
+public class CmsMenu {
 	
 	private long id;
 	private String title;
 	private long parentId;
-	private long sequence;
+	private int sequence;
+	
+	private List<CmsMenu> children;
 
 	public long getId() {
 		return id;
@@ -31,12 +35,21 @@ public class DbMenu {
 		this.parentId = parentId;
 	}
 
-	public long getSequence() {
+	public int getSequence() {
 		return sequence;
 	}
 
-	public void setSequence(long sequence) {
+	public void setSequence(int sequence) {
 		this.sequence = sequence;
+	}
+	
+	
+	public List<CmsMenu> getChildren() {
+		return children;
+	}
+	
+	public void setChildren(List<CmsMenu> children) {
+		this.children = children;
 	}
 
 }
