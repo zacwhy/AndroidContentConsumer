@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.zac.contentconsumer.database.CmsContentDataSource;
 import com.zac.contentconsumer.database.CmsMenuDataSource;
 import com.zac.contentconsumer.database.CmsSQLiteOpenHelper;
-import com.zac.contentconsumer.support.CmsMenu;
+import com.zac.contentconsumer.cms.CmsMenu;
 
 public final class Temporary {
 

@@ -1,4 +1,4 @@
-package com.zac.contentconsumer.support;
+package com.zac.contentconsumer.cms;
 
 public class CmsContent {
 	

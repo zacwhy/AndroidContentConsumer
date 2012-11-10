@@ -3,7 +3,7 @@ package com.zac.contentconsumer.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zac.contentconsumer.support.CmsMenu;
+import com.zac.contentconsumer.cms.CmsMenu;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -40,13 +40,13 @@ public class CmsMenuDataSource {
 	// insert
 	//
 	
-	public CmsMenu insertMenu(String title, int parentId, int sequence) {
-		ContentValues values = new ContentValues();
-		values.put(CmsContract.CmsMenusTable.COLUMN_NAME_TITLE, title);
-		values.put(CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID, parentId);
-		values.put(CmsContract.CmsMenusTable.COLUMN_NAME_SEQUENCE, sequence);
-		return insertMenu(values);
-	}
+//	public CmsMenu insertMenu(String title, int parentId, int sequence) {
+//		ContentValues values = new ContentValues();
+//		values.put(CmsContract.CmsMenusTable.COLUMN_NAME_TITLE, title);
+//		values.put(CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID, parentId);
+//		values.put(CmsContract.CmsMenusTable.COLUMN_NAME_SEQUENCE, sequence);
+//		return insertMenu(values);
+//	}
 
 	private CmsMenu insertMenu(ContentValues values) {
 		long id = database.insert(CmsContract.CmsMenusTable.TABLE_NAME, null, values);
@@ -70,20 +70,20 @@ public class CmsMenuDataSource {
 	// delete
 	//
 	
-	public int deleteAllMenus() {
-		return deleteAllMenus(database);
-	}
+//	public int deleteAllMenus() {
+//		return deleteAllMenus(database);
+//	}
 	
 	public static int deleteAllMenus(SQLiteDatabase database) {
 		return database.delete(CmsContract.CmsMenusTable.TABLE_NAME, "1", null);
 	}
 
-	public void deleteMenu(CmsMenu menu) {
-		long id = menu.getId();
-		String whereClause = CmsContract.CmsMenusTable._ID + " = ?";
-		String[] whereArgs = { String.valueOf(id) };
-		database.delete(CmsContract.CmsMenusTable.TABLE_NAME, whereClause, whereArgs);
-	}
+//	public void deleteMenu(CmsMenu menu) {
+//		long id = menu.getId();
+//		String whereClause = CmsContract.CmsMenusTable._ID + " = ?";
+//		String[] whereArgs = { String.valueOf(id) };
+//		database.delete(CmsContract.CmsMenusTable.TABLE_NAME, whereClause, whereArgs);
+//	}
 	
 	//
 	// get

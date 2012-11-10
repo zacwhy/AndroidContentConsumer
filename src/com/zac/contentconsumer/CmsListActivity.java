@@ -16,10 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.zac.contentconsumer.support.CmsMenu;
-import com.zac.contentconsumer.support.CmsMenuHelper;
-import com.zac.contentconsumer.support.CmsMenuManager;
-import com.zac.contentconsumer.support.ICmsMenuManager;
+import com.zac.contentconsumer.cms.CmsMenu;
+import com.zac.contentconsumer.cms.CmsMenuHelper;
+import com.zac.contentconsumer.cms.CmsMenuManager;
+import com.zac.contentconsumer.cms.ICmsMenuManager;
 
 public class CmsListActivity extends ListActivity {
 

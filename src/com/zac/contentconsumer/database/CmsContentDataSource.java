@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.zac.contentconsumer.support.CmsContent;
+import com.zac.contentconsumer.cms.CmsContent;
 
 public class CmsContentDataSource {
 
@@ -35,9 +35,9 @@ public class CmsContentDataSource {
 	// insert
 	//
 	
-	public long insertContent(int menuId, String text) {
-		return insertContent(database, menuId, text);
-	}
+//	public long insertContent(int menuId, String text) {
+//		return insertContent(database, menuId, text);
+//	}
 	
 	public static long insertContent(SQLiteDatabase database, long menuId, String text) {
 		ContentValues values = new ContentValues();

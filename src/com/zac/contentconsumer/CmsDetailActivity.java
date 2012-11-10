@@ -9,12 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.zac.contentconsumer.support.CmsContent;
-import com.zac.contentconsumer.support.CmsContentManager;
-import com.zac.contentconsumer.support.CmsMenu;
-import com.zac.contentconsumer.support.CmsMenuManager;
-import com.zac.contentconsumer.support.ICmsContentManager;
-import com.zac.contentconsumer.support.ICmsMenuManager;
+import com.zac.contentconsumer.cms.CmsContent;
+import com.zac.contentconsumer.cms.CmsContentManager;
+import com.zac.contentconsumer.cms.CmsMenu;
+import com.zac.contentconsumer.cms.CmsMenuManager;
+import com.zac.contentconsumer.cms.ICmsContentManager;
+import com.zac.contentconsumer.cms.ICmsMenuManager;
 
 public class CmsDetailActivity extends Activity {
 

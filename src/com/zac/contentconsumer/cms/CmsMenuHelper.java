@@ -1,4 +1,4 @@
-package com.zac.contentconsumer.support;
+package com.zac.contentconsumer.cms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,7 @@ public final class CmsMenuHelper {
 			list.add(menu.getTitle());
 		}
 
-		String[] array = list.toArray(new String[list.size()]);
-		return array;
+        return list.toArray(new String[list.size()]);
 	}
 	
 }

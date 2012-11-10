@@ -1,4 +1,4 @@
-package com.zac.contentconsumer.support;
+package com.zac.contentconsumer.cms;
 
 import com.zac.contentconsumer.database.CmsContentDataSource;
 import android.content.Context;
