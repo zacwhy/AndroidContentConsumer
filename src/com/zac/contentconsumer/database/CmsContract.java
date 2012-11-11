@@ -9,10 +9,11 @@ public class CmsContract {
 
 	public static abstract class CmsMenusTable implements BaseColumns {
 		public static final String TABLE_NAME = "cms_menus";
-		public static final String COLUMN_NAME_TITLE = "title";
-		public static final String COLUMN_NAME_PARENT_ID = "parent_id";
+        public static final String COLUMN_NAME_MENU_ID = "cms_menu_id";
+        public static final String COLUMN_NAME_PARENT_ID = "parent_id";
 		public static final String COLUMN_NAME_SEQUENCE = "sequence";
-	}
+        public static final String COLUMN_NAME_TITLE = "title";
+    }
 	
 	public static abstract class CmsContentsTable implements BaseColumns {
 		public static final String TABLE_NAME = "cms_contents";

@@ -11,7 +11,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         // todo remove
-        Temporary.recreateMenus(getApplicationContext());
+        Temporary.recreateCms(getApplicationContext());
                 
         startActivity(new Intent(this, CmsListActivity.class));
 		finish();

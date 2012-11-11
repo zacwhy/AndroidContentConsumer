@@ -24,9 +24,7 @@ import com.zac.contentconsumer.cms.ICmsMenuManager;
 public class CmsListActivity extends ListActivity {
 
 	public final static String EXTRA_MENU_ID = "com.zac.contentconsumer.MENU_ID";
-
 	private final static String EMPTY_LIST = "Empty List";
-	
 	private CmsMenu currentMenu;
 
 	@Override
@@ -35,29 +33,23 @@ public class CmsListActivity extends ListActivity {
 
 		Intent intent = getIntent();
 		long menuId = intent.getLongExtra(EXTRA_MENU_ID, 0);
-		
-		ICmsMenuManager cmsMenuManager = new CmsMenuManager(this);
-		
-		if (menuId == 0) {
-			currentMenu = cmsMenuManager.getRootMenuWithChildren();
-		} else {
-			currentMenu = cmsMenuManager.getMenuWithChildrenById(menuId);
-		}
-		
+
+        currentMenu = getCmsMenuById(menuId);
+
 		if (currentMenu == null) {
 			setUpEmptyList();
 		} else {
 			setUpNonEmptyList();
 		}
 	}
-	
+
 	private void setUpEmptyList() {
 		setTitle(EMPTY_LIST);
 		Toast.makeText(getApplicationContext(), EMPTY_LIST, Toast.LENGTH_LONG).show();
 	}
 	
 	private void setUpNonEmptyList() {
-		if (currentMenu.getParentId() != 0) {
+		if (!isRootMenu()) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		
@@ -71,12 +63,12 @@ public class CmsListActivity extends ListActivity {
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				handleOnItemClick(parent, view, position, id);				
+				handleOnItemClick(position);
 			}
 		});
 	}
-	
-	private void handleOnItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+	private void handleOnItemClick(int position) {
 		List<CmsMenu> childMenus = currentMenu.getChildren();
 		CmsMenu nextMenu = childMenus.get(position);
 		
@@ -93,6 +85,11 @@ public class CmsListActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_cms_list, menu);
+
+        if (isRootMenu()) {
+            menu.removeItem(R.id.menu_home);
+        }
+
 		return true;
 	}
 
@@ -100,17 +97,43 @@ public class CmsListActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				Intent intent = new Intent(this, CmsListActivity.class);
-	        	intent.putExtra(CmsListActivity.EXTRA_MENU_ID, currentMenu.getParentId());
-	            NavUtils.navigateUpTo(this, intent);
+                Intent intent1 = getCmsListActivityIntent(currentMenu.getParentId());
+	            NavUtils.navigateUpTo(this, intent1);
 				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 				
 			case R.id.menu_home:
-				Toast.makeText(getApplicationContext(), "Go home", Toast.LENGTH_SHORT).show();
+                CmsMenu nextMenu = getRootCmsMenu();
+                Intent intent2 = getCmsListActivityIntent(nextMenu.getId());
+                startActivity(intent2);
+				//Toast.makeText(getApplicationContext(), "Go home", Toast.LENGTH_SHORT).show();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+    private boolean isRootMenu() {
+        return currentMenu.getParentId() == 0;
+    }
+
+    private CmsMenu getRootCmsMenu() {
+        return getCmsMenuById(0);
+    }
+
+    private CmsMenu getCmsMenuById(long menuId) {
+        ICmsMenuManager cmsMenuManager = new CmsMenuManager(getApplicationContext());
+
+        if (menuId == 0) {
+            return cmsMenuManager.getRootMenuWithChildren();
+        }
+
+        return cmsMenuManager.getMenuWithChildrenById(menuId);
+    }
+
+    private Intent getCmsListActivityIntent(long menuId) {
+        Intent intent = new Intent(getApplicationContext(), CmsListActivity.class);
+        intent.putExtra(EXTRA_MENU_ID, menuId);
+        return intent;
+    }
 
 }

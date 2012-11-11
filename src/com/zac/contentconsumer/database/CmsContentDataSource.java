@@ -28,23 +28,20 @@ public class CmsContentDataSource {
 	}
 
 	public void close() {
+        database.close();
 		dbHelper.close();
 	}
 
 	//
 	// insert
 	//
-	
-//	public long insertContent(int menuId, String text) {
-//		return insertContent(database, menuId, text);
-//	}
-	
-	public static long insertContent(SQLiteDatabase database, long menuId, String text) {
-		ContentValues values = new ContentValues();
-		values.put(CmsContract.CmsContentsTable.COLUMN_NAME_CMS_MENU_ID, menuId);
-		values.put(CmsContract.CmsContentsTable.COLUMN_NAME_CONTENT, text);
-		return database.insert(CmsContract.CmsContentsTable.TABLE_NAME, null, values);
-	}
+
+    public static long insertContent(SQLiteDatabase database, CmsContent cmsContent) {
+        ContentValues values = new ContentValues();
+        values.put(CmsContract.CmsContentsTable.COLUMN_NAME_CMS_MENU_ID, cmsContent.getMenuId());
+        values.put(CmsContract.CmsContentsTable.COLUMN_NAME_CONTENT, cmsContent.getContent());
+        return database.insert(CmsContract.CmsContentsTable.TABLE_NAME, null, values);
+    }
 	
 	//
 	// delete
@@ -82,16 +79,9 @@ public class CmsContentDataSource {
 	//
 	
 	private static CmsContent cursorToCmsContent(Cursor c) {
-		CmsContent content = new CmsContent();
-		
-		//Cursor c = cursor;
-		content.setMenuId(getLong(c, CmsContract.CmsContentsTable.COLUMN_NAME_CMS_MENU_ID));
-		content.setContent(getString(c, CmsContract.CmsContentsTable.COLUMN_NAME_CONTENT));
-		
-		//content.setMenuId(cursor.getLong(cursor.getColumnIndexOrThrow(CmsContract.CmsContentsTable.COLUMN_NAME_CMS_MENU_ID)));
-		//content.setContent(cursor.getString(cursor.getColumnIndexOrThrow(CmsContract.CmsContentsTable.COLUMN_NAME_CONTENT)));
-		
-		return content;
+		long menuId = getLong(c, CmsContract.CmsContentsTable.COLUMN_NAME_CMS_MENU_ID);
+		String content = getString(c, CmsContract.CmsContentsTable.COLUMN_NAME_CONTENT);
+        return new CmsContent(menuId, content);
 	}
 	
 	private static long getLong(Cursor cursor, String columnName) {

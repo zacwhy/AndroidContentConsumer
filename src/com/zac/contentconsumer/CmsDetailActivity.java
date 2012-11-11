@@ -18,8 +18,7 @@ import com.zac.contentconsumer.cms.ICmsMenuManager;
 
 public class CmsDetailActivity extends Activity {
 
-	private long currentMenuParentId;
-	//private CmsMenu currentMenu; // improve resource efficiency
+	private CmsMenu currentMenu;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,9 +32,8 @@ public class CmsDetailActivity extends Activity {
      	Context applicationContext = getApplicationContext();
      	
      	ICmsMenuManager cmsMenuManager = new CmsMenuManager(applicationContext);
-		CmsMenu currentMenu = cmsMenuManager.getMenuWithChildrenById(menuId);
-		currentMenuParentId = currentMenu.getParentId();
-		
+	    currentMenu = cmsMenuManager.getMenuWithChildrenById(menuId);
+
 		setTitle(currentMenu.getTitle());
         setContentView(R.layout.activity_cms_detail);
         
@@ -64,14 +62,39 @@ public class CmsDetailActivity extends Activity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-        	Intent intent = new Intent(this, CmsListActivity.class);
-        	intent.putExtra(CmsListActivity.EXTRA_MENU_ID, currentMenuParentId);
-            NavUtils.navigateUpTo(this, intent);
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = getCmsListActivityIntent(currentMenu.getParentId());
+                NavUtils.navigateUpTo(this, intent);
+                return true;
+
+            case R.id.menu_home:
+                CmsMenu nextMenu = getRootCmsMenu();
+                Intent intent2 = getCmsListActivityIntent(nextMenu.getId());
+                startActivity(intent2);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private CmsMenu getRootCmsMenu() {
+        return getCmsMenuById(0);
+    }
+
+    private CmsMenu getCmsMenuById(long menuId) {
+        ICmsMenuManager cmsMenuManager = new CmsMenuManager(getApplicationContext());
+
+        if (menuId == 0) {
+            return cmsMenuManager.getRootMenuWithChildren();
         }
 
-        return super.onOptionsItemSelected(item);
+        return cmsMenuManager.getMenuWithChildrenById(menuId);
+    }
+
+    private Intent getCmsListActivityIntent(long menuId) {
+        Intent intent = new Intent(getApplicationContext(), CmsListActivity.class);
+        intent.putExtra(CmsListActivity.EXTRA_MENU_ID, menuId);
+        return intent;
     }
     
 }

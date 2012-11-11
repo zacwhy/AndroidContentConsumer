@@ -4,6 +4,11 @@ public class CmsContent {
 	
 	private long menuId;
 	private String content;
+
+    public CmsContent(long menuId, String content) {
+        setMenuId(menuId);
+        setContent(content);
+    }
 	
 	public long getMenuId() {
 		return menuId;

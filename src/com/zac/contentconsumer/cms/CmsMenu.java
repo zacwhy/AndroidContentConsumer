@@ -11,7 +11,13 @@ public class CmsMenu {
 	
 	private List<CmsMenu> children;
 
-	public long getId() {
+    public CmsMenu(long id, long parentId, String title) {
+        setId(id);
+        setParentId(parentId);
+        setTitle(title);
+    }
+
+    public long getId() {
 		return id;
 	}
 
