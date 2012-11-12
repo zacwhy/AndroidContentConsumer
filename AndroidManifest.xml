@@ -14,10 +14,10 @@
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".CmsListActivity"
@@ -27,14 +27,14 @@
                 android:name=".CmsDetailActivity"
                 android:label="@string/title_activity_cms_detail">
         </activity>
-        <activity
-                android:name=".TabsSwipeActivity"
-                android:label="string/title_activity_tabs_swipe">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <!--<activity-->
+                <!--android:name=".TabsSwipeActivity"-->
+                <!--android:label="string/title_activity_tabs_swipe">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
     </application>
 
 </manifest>

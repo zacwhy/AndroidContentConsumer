@@ -18,40 +18,40 @@ import com.zac.contentconsumer.cms.ICmsMenuManager;
 
 public class CmsDetailActivity extends Activity {
 
-	private CmsMenu currentMenu;
-	
+    private CmsMenu currentMenu;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        
-     	Intent intent = getIntent();
-     	long menuId = intent.getLongExtra(CmsListActivity.EXTRA_MENU_ID, 0);
-     	
-     	Context applicationContext = getApplicationContext();
-     	
-     	ICmsMenuManager cmsMenuManager = new CmsMenuManager(applicationContext);
-	    currentMenu = cmsMenuManager.getMenuWithChildrenById(menuId);
 
-		setTitle(currentMenu.getTitle());
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        long menuId = intent.getLongExtra(CmsListActivity.EXTRA_MENU_ID, 0);
+
+        Context applicationContext = getApplicationContext();
+
+        ICmsMenuManager cmsMenuManager = new CmsMenuManager(applicationContext);
+        currentMenu = cmsMenuManager.getMenuWithChildrenById(menuId);
+
+        setTitle(currentMenu.getTitle());
         setContentView(R.layout.activity_cms_detail);
-        
-		ICmsContentManager cmsContentManager = new CmsContentManager(applicationContext);
-		CmsContent cmsContent = cmsContentManager.getContentByMenuId(currentMenu.getId());
-		
-		if (cmsContent != null) {
-	 	   	String html = getRenderedHtml(cmsContent.getContent());
-	        WebView webView = (WebView) findViewById(R.id.webView1);
-	 	   	//webView.getSettings().setJavaScriptEnabled(true);
-	 	   	//webView.loadUrl("http://www.google.com");
-	 	   	webView.loadData(html, "text/html", "UTF-8");
-		}
+
+        ICmsContentManager cmsContentManager = new CmsContentManager(applicationContext);
+        CmsContent cmsContent = cmsContentManager.getContentByMenuId(currentMenu.getId());
+
+        if (cmsContent != null) {
+            String html = getRenderedHtml(cmsContent.getContent());
+            WebView webView = (WebView) findViewById(R.id.webView1);
+            //webView.getSettings().setJavaScriptEnabled(true);
+            //webView.loadUrl("http://www.google.com");
+            webView.loadData(html, "text/html", "UTF-8");
+        }
     }
-    
+
     private static String getRenderedHtml(String content) {
-    	String format = "<html><body style=\"color: red;\">%s</body></html>";
- 	   	return String.format(format, content);
+        String format = "<html><body style=\"color: red;\">%s</body></html>";
+        return String.format(format, content);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CmsDetailActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_cms_detail, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -96,5 +96,5 @@ public class CmsDetailActivity extends Activity {
         intent.putExtra(CmsListActivity.EXTRA_MENU_ID, menuId);
         return intent;
     }
-    
+
 }
