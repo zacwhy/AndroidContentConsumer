@@ -4,6 +4,8 @@ import com.zac.contentconsumer.database.CmsMenuDataSource;
 
 import android.content.Context;
 
+import java.util.List;
+
 public class CmsMenuManager implements ICmsMenuManager {
 
 	private Context context;
@@ -36,6 +38,14 @@ public class CmsMenuManager implements ICmsMenuManager {
 		close();
 		return hasChild;
 	}
+
+    @Override
+    public List<CmsMenu> getSiblingMenusById(long id) {
+        open();
+        List<CmsMenu> menus = dataSource.getSiblingMenusById(id);
+        close();
+        return menus;
+    }
 	
 	private void open() {
 		dataSource = new CmsMenuDataSource(context);

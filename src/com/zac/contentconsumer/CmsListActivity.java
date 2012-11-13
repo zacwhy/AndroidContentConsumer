@@ -75,7 +75,7 @@ public class CmsListActivity extends ListActivity {
 		ICmsMenuManager cmsMenuManager = new CmsMenuManager(this);		
 		boolean hasChild = cmsMenuManager.hasChild(nextMenu.getId());
 		
-		Class<?> cls = hasChild ? CmsListActivity.class : CmsDetailActivity.class;
+		Class<?> cls = hasChild ? CmsListActivity.class : CmsDetailFragmentActivity.class;
 		Context applicationContext = getApplicationContext();
 		Intent intent = new Intent(applicationContext, cls);
 		intent.putExtra(EXTRA_MENU_ID, nextMenu.getId());

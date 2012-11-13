@@ -178,6 +178,57 @@ public class CmsMenuDataSource {
 		
 		return count > 0;
 	}
+
+//    public CmsMenu getMenuById(long id) {
+//        String table = CmsContract.CmsMenusTable.TABLE_NAME;
+//        String selection = CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID + " = ?";
+//        String[] selectionArgs = { String.valueOf(id) };
+//        Cursor cursor = database.query(table, allColumns, selection, selectionArgs, null, null, null);
+//
+//        cursor.moveToFirst();
+//        if (cursor.isAfterLast()) {
+//            return null;
+//        }
+//
+//        CmsMenu menu = cursorToCmsMenu(cursor);
+//        //List<CmsMenu> children = getMenusByParentId(menu.getId());
+//        //menu.setChildren(children);
+//
+//        cursor.close();
+//        return menu;
+//    }
+
+    public List<CmsMenu> getSiblingMenusById(long id) {
+        String table = CmsContract.CmsMenusTable.TABLE_NAME;
+        String columnId = CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID;
+        String columnParentId = CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID;
+//        String format = "select * from %s where %s = (select %s from %s where %s = ?)";
+//        String sql = String.format(format, table, columnParentId, columnParentId, table, columnId);
+
+        // where parentId = (select parentId from CmsMenu where menuId = ?
+        // and (select count(*) from CmsMenu where parentId = ) = 0)
+        String format = "%s = (select %s from %s where %s = ?)";
+        String selection = String.format(format, columnParentId, columnParentId, table, columnId);
+        //String selection = CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+        Cursor cursor = database.query(table, allColumns, selection, selectionArgs, null, null, null);
+
+        List<CmsMenu> menus = new ArrayList<CmsMenu>();
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            CmsMenu menu = cursorToCmsMenu(cursor);
+
+            if (!hasChild(menu.getId())) {
+                menus.add(menu);
+            }
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return menus;
+    }
 	
 	//
 	// helpers
