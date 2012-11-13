@@ -22,7 +22,7 @@ public final class Temporary {
 
     private SQLiteDatabase database;
 
-	public static void recreateCms(Context context) {
+    public static void recreateCms(Context context) {
         Temporary temporary = new Temporary();
         temporary.recreateCms2(context);
     }
@@ -30,21 +30,21 @@ public final class Temporary {
     private void recreateCms2(Context context) {
         CmsSQLiteOpenHelper dbHelper = new CmsSQLiteOpenHelper(context);
         database = dbHelper.getWritableDatabase();
-		recreateDatabase();
-		database.close();
-		dbHelper.close();
-	}
-	
-	private void recreateDatabase() {
-		CmsMenuDataSource.deleteAllMenus(database);
-		CmsContentDataSource.deleteAllContents(database);
-		createDatabase();
-	}
-	
-	private void createDatabase() {
+        recreateDatabase();
+        database.close();
+        dbHelper.close();
+    }
+
+    private void recreateDatabase() {
+        CmsMenuDataSource.deleteAllMenus(database);
+        CmsContentDataSource.deleteAllContents(database);
+        createDatabase();
+    }
+
+    private void createDatabase() {
         String json = getJson();
         parseJson(json);
-	}
+    }
 
     private StringBuilder jsonStringBuilder;
 

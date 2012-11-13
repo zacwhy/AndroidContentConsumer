@@ -9,12 +9,12 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         // todo remove
         Temporary.recreateCms(getApplicationContext());
-                
+
         startActivity(new Intent(this, CmsListActivity.class));
-		finish();
+        finish();
     }
 
 }
