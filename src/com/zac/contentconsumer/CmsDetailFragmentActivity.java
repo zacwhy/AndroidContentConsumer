@@ -7,9 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -38,6 +40,7 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
         ICmsMenuManager cmsMenuManager = new CmsMenuManager(getApplicationContext());
         menus = cmsMenuManager.getSiblingMenusById(menuId);
 
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_tabs_swipe);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -68,6 +71,45 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_cms_detail, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                int position = mViewPager.getCurrentItem();
+                CmsMenu currentMenu = menus.get(position);
+                Intent intent = getCmsListActivityIntent(currentMenu.getParentId());
+                NavUtils.navigateUpTo(this, intent);
+                return true;
+
+            case R.id.menu_home:
+                CmsMenu nextMenu = getRootCmsMenu();
+                Intent intent2 = getCmsListActivityIntent(nextMenu.getId());
+                startActivity(intent2);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private CmsMenu getRootCmsMenu() {
+        return getCmsMenuById(0);
+    }
+
+    private CmsMenu getCmsMenuById(long menuId) {
+        ICmsMenuManager cmsMenuManager = new CmsMenuManager(getApplicationContext());
+
+        if (menuId == 0) {
+            return cmsMenuManager.getRootMenuWithChildren();
+        }
+
+        return cmsMenuManager.getMenuWithChildrenById(menuId);
+    }
+
+    private Intent getCmsListActivityIntent(long menuId) {
+        Intent intent = new Intent(getApplicationContext(), CmsListActivity.class);
+        intent.putExtra(CmsListActivity.EXTRA_MENU_ID, menuId);
+        return intent;
     }
 
     private static int getPosition(long menuId, List<CmsMenu> menus) {
@@ -128,7 +170,7 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
             ICmsContentManager cmsContentManager = new CmsContentManager(context);
             CmsContent cmsContent = cmsContentManager.getContentByMenuId(menuId);
 
-            String html = String.format("<span style=\"color:%s;\">%s</span>", "blue", cmsContent.getContent());
+            String html = cmsContent.getContent();
 
             View view = inflater.inflate(R.layout.activity_cms_detail, container, false);
             WebView webView = (WebView) view.findViewById(R.id.webView1);

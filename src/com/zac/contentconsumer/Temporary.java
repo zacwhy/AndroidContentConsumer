@@ -59,14 +59,14 @@ public final class Temporary {
 
         addMenu(2, 1, "Menu 1");
         addMenu(3, 2, "Menu 1-1");
-        addMenu(4, 3, "Menu 1-1-1", "This is the content for menu 1-1-1.");
+        addMenu(4, 3, "Menu 1-1-1", "This is the content for <span style=\"color:red;font-weight:bold;\">menu 1-1-1.</span>");
 
         addMenu(5, 1, "Menu 2");
-        addMenu(6, 5, "Menu 2-1", "This is the content for menu 2-1.");
-        addMenu(7, 5, "Menu 2-2", "This is the content for menu 2-2.");
-        addMenu(8, 5, "Menu 2-3", "This is the content for menu 2-3.");
-        addMenu(9, 5, "Menu 2-4", "This is the content for menu 2-4.");
-        addMenu(10, 5, "Menu 2-5", "This is the content for menu 2-5.");
+        addMenu(6, 5, "Menu 2-1", "This is the content for <span style=\"color:red;font-weight:bold;\">menu 2-1.</span>");
+        addMenu(7, 5, "Menu 2-2", "This is the content for <span style=\"color:green;font-weight:bold;\">menu 2-2.</span>");
+        addMenu(8, 5, "Menu 2-3", "This is the content for <span style=\"color:blue;font-weight:bold;\">menu 2-3.</span>");
+        addMenu(9, 5, "Menu 2-4", "This is the content for <span style=\"color:cyan;font-weight:bold;\">menu 2-4.</span>");
+        addMenu(10, 5, "Menu 2-5", "This is the content for <span style=\"color:magenta;font-weight:bold;\">menu 2-5.</span>");
 
         addMenu(11, 1, "The quick brown fox jumps over the lazy dog.",
                 "<b>The lazy dog jumps over the quick brown fox.</b>");
