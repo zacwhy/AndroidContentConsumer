@@ -15,7 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import com.zac.contentconsumer.cms.*;
+import com.zac.contentconsumer.cms.CmsContent;
+import com.zac.contentconsumer.cms.CmsContentManager;
+import com.zac.contentconsumer.cms.CmsMenu;
+import com.zac.contentconsumer.cms.CmsMenuManager;
+import com.zac.contentconsumer.cms.ICmsContentManager;
+import com.zac.contentconsumer.cms.ICmsMenuManager;
 
 import java.util.List;
 
