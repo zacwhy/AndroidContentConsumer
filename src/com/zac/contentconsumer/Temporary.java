@@ -71,9 +71,36 @@ public final class Temporary {
         addMenu(11, 1, "The quick brown fox jumps over the lazy dog.",
                 "<b>The lazy dog jumps over the quick brown fox.</b>");
 
+        addMenu(12, 1, "Tabs");
+        addMenu(13, 12, "Tab 1");
+        addMenu(14, 12, "Tab 2");
+        addMenu(15, 12, "Tab 3");
+
+        addLeaf(16, 13, "Article 1-1");
+        addLeaf(17, 13, "Article 1-2");
+        addLeaf(18, 13, "Article 1-3");
+        addLeaf(19, 14, "Article 2-1");
+        addLeaf(20, 14, "Article 2-2");
+        addLeaf(21, 14, "Article 2-3");
+        addLeaf(22, 14, "Article 2-4");
+        addLeaf(23, 15, "Article 3-1");
+        addLeaf(24, 15, "Article 3-2");
+        addLeaf(25, 15, "Article 3-3");
+        addLeaf(26, 15, "Article 3-4");
+        addLeaf(27, 15, "Article 3-5");
+
+        addMenu(28, 13, "Menu");
+        addLeaf(29, 28, "Article in menu");
+
+        addLeaf(30, 12, "Content 4");
+
         s.append("]");
         s.append("}");
         return s.toString();
+    }
+
+    private void addLeaf(long id, long parentId, String title) {
+        addMenu(id, parentId, title, "this is content for " + title);
     }
 
     private void addMenu(long id, long parentId, String title) {
@@ -99,7 +126,7 @@ public final class Temporary {
             JSONArray menuArray = jsonObject.getJSONArray(TAG_MENUS);
 
             for (int i = 0; i < menuArray.length(); i++) {
-                try {
+                try { // loading to continue even if a single item is not valid
                     JSONObject m = menuArray.getJSONObject(i);
                     long menuId = m.getLong(TAG_MENU_ID);
 
