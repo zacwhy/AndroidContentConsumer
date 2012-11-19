@@ -103,10 +103,9 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mCurrentMenu.isRoot()) {
-            String title = getRootCmsMenu().getTitle();
-            MenuItem menuItem = menu.add(Menu.NONE, ID_MENU_ROOT, Menu.NONE, title);
-            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            CmsMenuHelper.addGoToRootMenu(menu, ID_MENU_ROOT, getRootCmsMenu().getTitle());
         }
+        getMenuInflater().inflate(R.menu.activity_cms, menu);
         return true;
     }
 

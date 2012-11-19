@@ -1,5 +1,7 @@
 package com.zac.contentconsumer;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import com.zac.contentconsumer.cms.CmsMenu;
 
 import java.util.ArrayList;
@@ -25,6 +27,11 @@ public final class CmsMenuHelper {
             }
         }
         return -1;
+    }
+
+    public static void addGoToRootMenu(Menu menu, int itemId, String title) {
+        MenuItem menuItem = menu.add(Menu.NONE, itemId, Menu.NONE, title);
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
 }
