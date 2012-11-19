@@ -132,20 +132,7 @@ public class CmsMenuDataSource {
     }
 
     public boolean hasChild(long id) {
-//        String table = CmsContract.CmsMenusTable.TABLE_NAME;
-//        String columnNameParentId = CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID;
-//        String sql = String.format("SELECT COUNT(*) FROM %s WHERE %s = ?", table, columnNameParentId);
-//
-//        Cursor cursor = database.rawQuery(sql, new String[]{String.valueOf(id)});
-//        cursor.moveToFirst();
-//        int count = cursor.getInt(0);
-//        cursor.close();
-
-        //SQLiteStatement sqliteStatement = database.compileStatement(sql);
-        //long count2 = sqliteStatement.simpleQueryForLong();
-
         int count = getChildrenCount(id);
-
         return count > 0;
     }
 

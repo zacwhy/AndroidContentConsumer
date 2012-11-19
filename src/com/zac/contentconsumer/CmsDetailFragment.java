@@ -28,7 +28,7 @@ public class CmsDetailFragment extends Fragment {
 
         String html = cmsContent.getContent();
 
-        View view = inflater.inflate(R.layout.activity_cms_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_cms_detail, container, false);
         WebView webView = (WebView) view.findViewById(R.id.webView1);
         webView.loadData(html, "text/html", "UTF-8");
         return view;

@@ -43,7 +43,7 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
         int position = CmsMenuHelper.getPosition(menuId, mSiblingMenus);
         mCurrentMenu = mSiblingMenus.get(position);
 
-        setContentView(R.layout.activity_tabs);
+        setContentView(R.layout.activity_cms);
         final ActionBar actionBar = getActionBar();
 
         if (!mCurrentMenu.isRoot()) {

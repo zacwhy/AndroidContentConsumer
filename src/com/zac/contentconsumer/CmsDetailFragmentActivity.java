@@ -36,7 +36,7 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
         cmsMenus = getCmsMenuManager().getSiblingMenusById(menuId, false);
         int position = CmsMenuHelper.getPosition(menuId, cmsMenus);
 
-        setContentView(R.layout.activity_tabs_swipe);
+        setContentView(R.layout.activity_cms_detail_fragment);
 
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
