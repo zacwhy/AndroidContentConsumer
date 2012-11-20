@@ -67,7 +67,7 @@ public class CmsMenuDataSource {
         return cursorToCmsMenus(cursor);
     }
 
-    public CmsMenu getMenuWithChildrenById(long id) {
+    public CmsMenu getMenuById(long id, boolean includeChildren) {
         String table = CmsContract.CmsMenusTable.TABLE_NAME;
         String selection = CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID + " = ?";
         String[] selectionArgs = {String.valueOf(id)};
@@ -85,8 +85,11 @@ public class CmsMenuDataSource {
             return null;
         }
 
-        List<CmsMenu> children = getMenusByParentId(cmsMenu.getId()); // TODO improve
-        cmsMenu.setChildren(children);
+        if (includeChildren) {
+            List<CmsMenu> children = getMenusByParentId(cmsMenu.getId()); // TODO improve
+            cmsMenu.setChildren(children);
+        }
+
         return cmsMenu;
     }
 

@@ -32,7 +32,7 @@ public class CmsListFragment extends ListFragment {
             //throw new Exception("menuId should not be 0");
         }
 
-        mCurrentMenu = getCmsMenuManager().getMenuWithChildrenById(menuId);
+        mCurrentMenu = getCmsMenuManager().getMenuById(menuId, true);
 
         String[] menuTextArray = CmsMenuHelper.getMenuTitleArray(mCurrentMenu.getChildren());
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
