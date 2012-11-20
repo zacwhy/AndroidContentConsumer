@@ -11,6 +11,8 @@ import com.zac.contentconsumer.cms.CmsMenu;
 import com.zac.contentconsumer.cms.CmsMenuManager;
 import com.zac.contentconsumer.cms.ICmsMenuManager;
 
+import java.util.List;
+
 import static com.zac.contentconsumer.CmsActivity.EXTRA_MENU_ID;
 
 public class CmsListFragment extends ListFragment {
@@ -19,7 +21,7 @@ public class CmsListFragment extends ListFragment {
 
     }
 
-    private CmsMenu mCurrentMenu;
+    private List<CmsMenu> mCmsMenus;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -32,9 +34,9 @@ public class CmsListFragment extends ListFragment {
             //throw new Exception("menuId should not be 0");
         }
 
-        mCurrentMenu = getCmsMenuManager().getMenuById(menuId, true);
+        mCmsMenus = getCmsMenuManager().getMenusByParentId(menuId);
 
-        String[] menuTextArray = CmsMenuHelper.getMenuTitleArray(mCurrentMenu.getChildren());
+        String[] menuTextArray = CmsMenuHelper.getMenuTitleArray(mCmsMenus);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, menuTextArray);
         setListAdapter(adapter);
@@ -42,7 +44,7 @@ public class CmsListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        CmsMenu cmsMenu = mCurrentMenu.getChildren().get(position);
+        CmsMenu cmsMenu = mCmsMenus.get(position);
         Class<?> cls = cmsMenu.hasChild() ? CmsActivity.class : CmsDetailFragmentActivity.class;
         Intent intent = new Intent(getApplicationContext(), cls);
         intent.putExtra(EXTRA_MENU_ID, cmsMenu.getId());

@@ -25,14 +25,6 @@ public class CmsMenuManager implements ICmsMenuManager {
     }
 
     @Override
-    public CmsMenu getMenuById(long id, boolean includeChildren) {
-        open();
-        CmsMenu menu = dataSource.getMenuById(id, includeChildren);
-        close();
-        return menu;
-    }
-
-    @Override
     public List<CmsMenu> getMenusByParentId(long parentId) {
         open();
         List<CmsMenu> menus = dataSource.getMenusByParentId(parentId);

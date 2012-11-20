@@ -15,12 +15,23 @@ public class CmsMenuDataSource {
     private SQLiteDatabase database;
     private CmsSQLiteOpenHelper dbHelper;
 
-    private static String[] allColumns =
+    private static final String COLUMN_NAME_CHILDREN_COUNT = "children_count";
+
+    private static final String CHILDREN_COUNT =
+            String.format("(SELECT COUNT(*) FROM %s b WHERE b.%s = %s.%s) AS %s",
+                    CmsContract.CmsMenusTable.TABLE_NAME,
+                    CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID,
+                    CmsContract.CmsMenusTable.TABLE_NAME,
+                    CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID,
+                    COLUMN_NAME_CHILDREN_COUNT);
+
+    private static final String[] allColumns =
             {
                     CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID,
                     CmsContract.CmsMenusTable.COLUMN_NAME_TITLE,
                     CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID,
-                    CmsContract.CmsMenusTable.COLUMN_NAME_SEQUENCE
+                    CmsContract.CmsMenusTable.COLUMN_NAME_SEQUENCE,
+                    CHILDREN_COUNT
             };
 
     public CmsMenuDataSource(Context context) {
@@ -67,38 +78,12 @@ public class CmsMenuDataSource {
         return cursorToCmsMenus(cursor);
     }
 
-    public CmsMenu getMenuById(long id, boolean includeChildren) {
-        String table = CmsContract.CmsMenusTable.TABLE_NAME;
-        String selection = CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(id)};
-        Cursor cursor = database.query(table, allColumns, selection, selectionArgs, null, null, null);
-
-        CmsMenu cmsMenu = null;
-
-        cursor.moveToFirst();
-        if (!cursor.isAfterLast()) {
-            cmsMenu = cursorToCmsMenu(cursor);
-        }
-        cursor.close();
-
-        if (cmsMenu == null) {
-            return null;
-        }
-
-        if (includeChildren) {
-            List<CmsMenu> children = getMenusByParentId(cmsMenu.getId()); // TODO improve
-            cmsMenu.setChildren(children);
-        }
-
-        return cmsMenu;
-    }
-
     public List<CmsMenu> getSiblingMenusById(long id, boolean includeBranches, boolean includeLeaves) {
         String table = CmsContract.CmsMenusTable.TABLE_NAME;
         String columnId = CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID;
         String columnParentId = CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID;
 
-        // WHERE parentId = (SELECT top 1 parentId FROM cms_menus WHERE menu_id = ?)
+        // WHERE parentId = (SELECT TOP 1 parentId FROM cms_menus WHERE menu_id = ?)
         String format = "%s = (SELECT %s FROM %s WHERE %s = ?)";
         String selection = String.format(format, columnParentId, columnParentId, table, columnId);
         String[] selectionArgs = {String.valueOf(id)};
@@ -119,18 +104,18 @@ public class CmsMenuDataSource {
         return filteredMenus;
     }
 
-    public int getChildrenCount(long id) {
-        String table = CmsContract.CmsMenusTable.TABLE_NAME;
-        String columnNameParentId = CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID;
-        String sql = String.format("SELECT COUNT(*) FROM %s WHERE %s = ?", table, columnNameParentId);
-
-        Cursor cursor = database.rawQuery(sql, new String[]{String.valueOf(id)});
-        cursor.moveToFirst();
-        int count = cursor.getInt(0);
-        cursor.close();
-
-        return count;
-    }
+//    public int getChildrenCount(long id) {
+//        String table = CmsContract.CmsMenusTable.TABLE_NAME;
+//        String columnNameParentId = CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID;
+//        String sql = String.format("SELECT COUNT(*) FROM %s WHERE %s = ?", table, columnNameParentId);
+//
+//        Cursor cursor = database.rawQuery(sql, new String[]{String.valueOf(id)});
+//        cursor.moveToFirst();
+//        int count = cursor.getInt(0);
+//        cursor.close();
+//
+//        return count;
+//    }
 
     //
     // Helpers
@@ -141,10 +126,6 @@ public class CmsMenuDataSource {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             CmsMenu cmsMenu = cursorToCmsMenu(cursor);
-
-            int childrenCount = getChildrenCount(cmsMenu.getId()); // TODO improve
-            cmsMenu.setChildrenCount(childrenCount);
-
             cmsMenus.add(cmsMenu);
             cursor.moveToNext();
         }
@@ -157,7 +138,15 @@ public class CmsMenuDataSource {
         long id = getLong(c, CmsContract.CmsMenusTable.COLUMN_NAME_MENU_ID);
         long parentId = getLong(c, CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID);
         String title = getString(c, CmsContract.CmsMenusTable.COLUMN_NAME_TITLE);
-        return new CmsMenu(id, parentId, title);
+        int childrenCount = getInt(c, COLUMN_NAME_CHILDREN_COUNT);
+
+        CmsMenu cmsMenu = new CmsMenu(id, parentId, title);
+        cmsMenu.setChildrenCount(childrenCount);
+        return cmsMenu;
+    }
+
+    private static int getInt(Cursor cursor, String columnName) {
+        return cursor.getInt(cursor.getColumnIndexOrThrow(columnName));
     }
 
     private static long getLong(Cursor cursor, String columnName) {
