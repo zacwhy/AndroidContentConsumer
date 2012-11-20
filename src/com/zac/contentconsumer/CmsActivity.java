@@ -16,6 +16,7 @@ import com.zac.contentconsumer.cms.CmsMenu;
 import com.zac.contentconsumer.cms.CmsMenuManager;
 import com.zac.contentconsumer.cms.ICmsMenuManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CmsActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -35,12 +36,17 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
         Intent intent = getIntent();
         long menuId = intent.getLongExtra(EXTRA_MENU_ID, 0);
 
+        int position;
+
         if (menuId == 0) {
-            menuId = getRootCmsMenu().getId();
+            mSiblingMenus = new ArrayList<CmsMenu>();
+            mSiblingMenus.add(getRootCmsMenu());
+            position = 0;
+        } else {
+            mSiblingMenus = getCmsMenuManager().getSiblingMenusById(menuId, true);
+            position = CmsMenuHelper.getPosition(menuId, mSiblingMenus);
         }
 
-        mSiblingMenus = getCmsMenuManager().getSiblingMenusById(menuId, true);
-        int position = CmsMenuHelper.getPosition(menuId, mSiblingMenus);
         mCurrentMenu = mSiblingMenus.get(position);
 
         setContentView(R.layout.activity_cms);

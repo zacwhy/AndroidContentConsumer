@@ -11,7 +11,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayShowTitleEnabled(false);
 
-        // todo remove
+        // TODO remove
         Temporary.recreateCms(getApplicationContext());
 
         startActivity(new Intent(this, CmsActivity.class));
