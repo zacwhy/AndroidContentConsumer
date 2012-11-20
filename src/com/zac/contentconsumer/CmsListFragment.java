@@ -29,7 +29,7 @@ public class CmsListFragment extends ListFragment {
         long menuId = args.getLong(EXTRA_MENU_ID, 0);
 
         if (menuId == 0) {
-            // TODO not supposed to
+            //throw new Exception("menuId should not be 0");
         }
 
         mCurrentMenu = getCmsMenuManager().getMenuWithChildrenById(menuId);

@@ -16,7 +16,7 @@ import com.zac.contentconsumer.cms.CmsMenu;
 import com.zac.contentconsumer.cms.CmsMenuManager;
 import com.zac.contentconsumer.cms.ICmsMenuManager;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CmsActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -39,25 +39,25 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
         int position;
 
         if (menuId == 0) {
-            mSiblingMenus = new ArrayList<CmsMenu>();
-            mSiblingMenus.add(getRootCmsMenu());
+            mSiblingMenus = Arrays.asList(getRootCmsMenu());
             position = 0;
         } else {
-            mSiblingMenus = getCmsMenuManager().getSiblingMenusById(menuId, true);
+            mSiblingMenus = getCmsMenuManager().getSiblingMenusById(menuId, true, true);
             position = CmsMenuHelper.getPosition(menuId, mSiblingMenus);
         }
 
-        mCurrentMenu = mSiblingMenus.get(position);
+        CmsMenu currentMenu = mSiblingMenus.get(position);
+        mCurrentMenu = currentMenu;
 
         setContentView(R.layout.activity_cms);
         final ActionBar actionBar = getActionBar();
 
-        if (!mCurrentMenu.isRoot()) {
+        if (!currentMenu.isRoot()) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         boolean showChildrenAsTabs = false;
-        if (mCurrentMenu.getId() == 12) showChildrenAsTabs = true; // TODO remove
+        if (currentMenu.getId() == 12) showChildrenAsTabs = true; // TODO remove
 
         if (showChildrenAsTabs) {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -67,8 +67,8 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
 
         switch (actionBar.getNavigationMode()) {
             case ActionBar.NAVIGATION_MODE_STANDARD:
-                setTitle(mCurrentMenu.getTitle());
-                loadCmsListFragment(mCurrentMenu.getId());
+                setTitle(currentMenu.getTitle());
+                loadCmsListFragment(currentMenu.getId());
                 break;
 
             case ActionBar.NAVIGATION_MODE_LIST:
@@ -76,15 +76,15 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
                 SpinnerAdapter spinnerAdapter = getSpinnerAdapter(mSiblingMenus, this);
                 actionBar.setListNavigationCallbacks(spinnerAdapter, getOnNavigationListener());
                 actionBar.setSelectedNavigationItem(position);
-                loadCmsListFragment(mCurrentMenu.getId());
+                loadCmsListFragment(currentMenu.getId());
                 break;
 
             case ActionBar.NAVIGATION_MODE_TABS:
-                setTitle(mCurrentMenu.getTitle());
-                List<CmsMenu> children = getCmsMenuManager().getMenusByParentId(mCurrentMenu.getId());
-                mCurrentMenu.setChildren(children);
+                setTitle(currentMenu.getTitle());
+                List<CmsMenu> children = getCmsMenuManager().getMenusByParentId(currentMenu.getId());
+                currentMenu.setChildren(children);
 
-                for (CmsMenu cmsMenu : mCurrentMenu.getChildren()) {
+                for (CmsMenu cmsMenu : children) {
                     String text = cmsMenu.getTitle();
                     actionBar.addTab(actionBar.newTab().setText(text).setTabListener(this));
                 }
@@ -199,7 +199,7 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
     }
 
     private CmsMenu getRootCmsMenu() {
-        return getCmsMenuManager().getRootMenuWithChildren(); // TODO no need children
+        return getCmsMenuManager().getRootMenu();
     }
 
     private ICmsMenuManager getCmsMenuManager() {

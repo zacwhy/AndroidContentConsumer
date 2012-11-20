@@ -16,11 +16,12 @@ public class CmsMenuManager implements ICmsMenuManager {
     }
 
     @Override
-    public CmsMenu getRootMenuWithChildren() {
-        open();
-        CmsMenu menu = dataSource.getRootMenuWithChildren();
-        close();
-        return menu;
+    public CmsMenu getRootMenu() {
+        List<CmsMenu> menus = getMenusByParentId(0);
+        if (menus.isEmpty()) {
+            return null;
+        }
+        return menus.get(0);
     }
 
     @Override
@@ -32,9 +33,9 @@ public class CmsMenuManager implements ICmsMenuManager {
     }
 
     @Override
-    public List<CmsMenu> getSiblingMenusById(long id, boolean includeSiblingWithChildren) {
+    public List<CmsMenu> getSiblingMenusById(long id, boolean includeBranches, boolean includeLeaves) {
         open();
-        List<CmsMenu> menus = dataSource.getSiblingMenusById(id, includeSiblingWithChildren);
+        List<CmsMenu> menus = dataSource.getSiblingMenusById(id, includeBranches, includeLeaves);
         close();
         return menus;
     }

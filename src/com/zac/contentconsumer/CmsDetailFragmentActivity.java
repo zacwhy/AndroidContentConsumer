@@ -35,7 +35,7 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
             //throw new Exception("menuId should not be 0");
         }
 
-        cmsMenus = getCmsMenuManager().getSiblingMenusById(menuId, false);
+        cmsMenus = getCmsMenuManager().getSiblingMenusById(menuId, false, true);
         int position = CmsMenuHelper.getPosition(menuId, cmsMenus);
 
         setContentView(R.layout.activity_cms_detail_fragment);
@@ -105,7 +105,7 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
     }
 
     private CmsMenu getRootCmsMenu() {
-        return getCmsMenuManager().getRootMenuWithChildren();
+        return getCmsMenuManager().getRootMenu();
     }
 
     private ICmsMenuManager getCmsMenuManager() {
