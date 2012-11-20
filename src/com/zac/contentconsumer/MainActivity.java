@@ -9,7 +9,6 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayShowTitleEnabled(false);
 
         // TODO remove
         Temporary.recreateCms(getApplicationContext());
