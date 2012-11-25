@@ -18,9 +18,6 @@ import java.util.List;
 
 public class CmsDetailFragmentActivity extends FragmentActivity {
 
-    private static final int ID_MENU_ROOT = 1;
-
-    private CmsDetailPagerAdapter mCmsDetailPagerAdapter;
     private ViewPager mViewPager;
     private List<CmsMenu> cmsMenus;
 
@@ -64,7 +61,7 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
             setTitle(currentMenu.getTitle());
         }
 
-        mCmsDetailPagerAdapter = new CmsDetailPagerAdapter(getSupportFragmentManager(), cmsMenus);
+        CmsDetailPagerAdapter mCmsDetailPagerAdapter = new CmsDetailPagerAdapter(getSupportFragmentManager(), cmsMenus);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mCmsDetailPagerAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -81,8 +78,9 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        CmsMenuHelper.addGoToRootMenu(menu, ID_MENU_ROOT, getRootCmsMenu().getTitle());
         getMenuInflater().inflate(R.menu.activity_cms, menu);
+        MenuItem menuItem = menu.findItem(R.id.menu_root);
+        menuItem.setTitle(getRootCmsMenu().getTitle());
         return true;
     }
 
@@ -96,7 +94,7 @@ public class CmsDetailFragmentActivity extends FragmentActivity {
                 NavUtils.navigateUpTo(this, intentParent);
                 return true;
 
-            case ID_MENU_ROOT:
+            case R.id.menu_root:
                 Intent intentRoot = getCmsListActivityIntent(getRootCmsMenu().getId());
                 startActivity(intentRoot);
                 return true;

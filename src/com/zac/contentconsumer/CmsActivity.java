@@ -2,8 +2,10 @@ package com.zac.contentconsumer;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +13,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 import android.widget.SpinnerAdapter;
 import com.zac.contentconsumer.cms.CmsMenu;
 import com.zac.contentconsumer.cms.CmsMenuManager;
@@ -24,7 +27,6 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
     public static final String EXTRA_MENU_ID = "com.zac.contentconsumer.MENU_ID";
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
-    private static final int ID_MENU_ROOT = 1;
 
     private List<CmsMenu> mSiblingMenus;
     private CmsMenu mCurrentMenu;
@@ -32,8 +34,11 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cms);
+        handleIntent(getIntent());
+    }
 
-        Intent intent = getIntent();
+    private void handleIntent(Intent intent) {
         long menuId = intent.getLongExtra(EXTRA_MENU_ID, 0);
 
         int position;
@@ -49,7 +54,6 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
         CmsMenu currentMenu = mSiblingMenus.get(position);
         mCurrentMenu = currentMenu;
 
-        setContentView(R.layout.activity_cms);
         final ActionBar actionBar = getActionBar();
 
         if (!currentMenu.isRoot()) {
@@ -68,15 +72,21 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
         switch (actionBar.getNavigationMode()) {
             case ActionBar.NAVIGATION_MODE_STANDARD:
                 setTitle(currentMenu.getTitle());
-                loadCmsListFragment(currentMenu.getId());
+                loadFragment(currentMenu);
+                //loadCmsListFragment(currentMenu.getId());
                 break;
 
             case ActionBar.NAVIGATION_MODE_LIST:
                 actionBar.setDisplayShowTitleEnabled(false);
-                SpinnerAdapter spinnerAdapter = getSpinnerAdapter(mSiblingMenus, this);
+
+                String[] menuTitleArray = CmsMenuHelper.getMenuTitleArray(mSiblingMenus);
+                SpinnerAdapter spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+                        android.R.id.text1, menuTitleArray);
+
                 actionBar.setListNavigationCallbacks(spinnerAdapter, getOnNavigationListener());
                 actionBar.setSelectedNavigationItem(position);
-                loadCmsListFragment(currentMenu.getId());
+                loadFragment(currentMenu);
+                //loadCmsListFragment(currentMenu.getId());
                 break;
 
             case ActionBar.NAVIGATION_MODE_TABS:
@@ -108,10 +118,22 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mCurrentMenu.isRoot()) {
-            CmsMenuHelper.addGoToRootMenu(menu, ID_MENU_ROOT, getRootCmsMenu().getTitle());
-        }
         getMenuInflater().inflate(R.menu.activity_cms, menu);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+        }
+
+        if (mCurrentMenu.isRoot()) {
+            menu.removeItem(R.id.menu_root);
+        } else {
+            MenuItem menuItem = menu.findItem(R.id.menu_root);
+            menuItem.setTitle(getRootCmsMenu().getTitle());
+        }
+
         return true;
     }
 
@@ -123,7 +145,7 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
                 NavUtils.navigateUpTo(this, parentIntent);
                 return true;
 
-            case ID_MENU_ROOT:
+            case R.id.menu_root:
                 Intent rootIntent = getCmsListActivityIntent(getRootCmsMenu().getId());
                 startActivity(rootIntent);
                 return true;
@@ -149,12 +171,6 @@ public class CmsActivity extends FragmentActivity implements ActionBar.TabListen
 
     //
     // Helpers
-
-    private static SpinnerAdapter getSpinnerAdapter(List<CmsMenu> menus, Context context) {
-        String[] menuTitleArray = CmsMenuHelper.getMenuTitleArray(menus);
-        return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, android.R.id.text1,
-                menuTitleArray);
-    }
 
     private ActionBar.OnNavigationListener getOnNavigationListener() {
         return new ActionBar.OnNavigationListener() {

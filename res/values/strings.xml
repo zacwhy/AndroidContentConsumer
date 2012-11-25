@@ -1,6 +1,15 @@
 <resources>
 
-    <string name="app_name">..Zac</string>
+    <string name="app_name">..</string>
     <string name="menu_settings">Settings</string>
+
+    <!-- The label for use as a searchable item -->
+    <string name="search_label">CMS</string>
+
+    <!-- The hint text that appears in the search box. -->
+    <string name="search_hint">Search</string>
+
+    <string name="search_instructions">Use the search box in the Action Bar</string>
+    <string name="search_results">Search results for \'%s\'</string>
 
 </resources>

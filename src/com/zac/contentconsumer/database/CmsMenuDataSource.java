@@ -104,6 +104,18 @@ public class CmsMenuDataSource {
         return filteredMenus;
     }
 
+    public List<CmsMenu> searchMenusByTitle(String query, long parentId, int levels, boolean includeBranches, boolean includeLeaves) {
+        String table = CmsContract.CmsMenusTable.TABLE_NAME;
+
+        String selection = CmsContract.CmsMenusTable.COLUMN_NAME_TITLE + " LIKE ?";
+        String p1 = "%" + query + "%";
+        String[] selectionArgs = {p1};
+
+        String orderBy = CmsContract.CmsMenusTable.COLUMN_NAME_SEQUENCE;
+        Cursor cursor = database.query(table, allColumns, selection, selectionArgs, null, null, orderBy);
+        return cursorToCmsMenus(cursor);
+    }
+
 //    public int getChildrenCount(long id) {
 //        String table = CmsContract.CmsMenusTable.TABLE_NAME;
 //        String columnNameParentId = CmsContract.CmsMenusTable.COLUMN_NAME_PARENT_ID;

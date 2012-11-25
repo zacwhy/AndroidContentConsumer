@@ -28,11 +28,11 @@ public class CmsListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         Bundle args = getArguments();
-        long menuId = args.getLong(EXTRA_MENU_ID, 0);
+        long menuId = args.getLong(EXTRA_MENU_ID);
 
-        if (menuId == 0) {
+        //if (menuId == 0) {
             //throw new Exception("menuId should not be 0");
-        }
+        //}
 
         mCmsMenus = getCmsMenuManager().getMenusByParentId(menuId);
 

@@ -40,6 +40,14 @@ public class CmsMenuManager implements ICmsMenuManager {
         return menus;
     }
 
+    @Override
+    public List<CmsMenu> searchMenusByTitle(String query, long parentId, int levels, boolean includeBranches, boolean includeLeaves) {
+        open();
+        List<CmsMenu> menus = dataSource.searchMenusByTitle(query, parentId, levels, includeBranches, includeLeaves);
+        close();
+        return menus;
+    }
+
     private void open() {
         dataSource = new CmsMenuDataSource(context);
         dataSource.open();
